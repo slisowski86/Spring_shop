@@ -7,8 +7,10 @@ import javax.persistence.*;
 @Table(name="orders")
 public class Order {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
+    private int amount;
+    private double cost;
     @ManyToOne
     @JoinColumn(name="customer_id", nullable = false)
     private Customer customer;
@@ -16,8 +18,9 @@ public class Order {
     @JoinColumn(name="product_id", nullable = false)
     private Product product;
 
-    private int amount;
-    private double cost;
+    public Order() {
+
+    }
 
     public int getId() {
         return id;
@@ -25,22 +28,6 @@ public class Order {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public int getAmount() {
@@ -57,5 +44,21 @@ public class Order {
 
     public void setCost(double cost) {
         this.cost = cost;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
