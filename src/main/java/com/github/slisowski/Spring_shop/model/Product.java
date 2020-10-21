@@ -1,6 +1,7 @@
 package com.github.slisowski.Spring_shop.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +12,9 @@ public class Product {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
-
+    @NotBlank(message = "Product description must not be empty")
     private String description;
-    @OneToMany(mappedBy = "product")
 
-    private List<Order> orders = new ArrayList<>();
     private String name;
     private double price;
 
@@ -39,13 +38,7 @@ public class Product {
         this.description = description;
     }
 
-    public List<Order> getOrders() {
-        return orders;
-    }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
 
     public String getName() {
         return name;
