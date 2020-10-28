@@ -1,6 +1,7 @@
 package com.github.slisowski.Spring_shop.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
@@ -13,10 +14,7 @@ import java.util.Optional;
 interface SqlProductRepository extends ProductRepository, JpaRepository<Product, Integer> {
 
 
-
-
-    List<Product> findProductByName(@Param("name") String name );
-
-
-
+    @Override
+    @Query(nativeQuery = true, value="select count(*) > 0 from products where id=:id")
+    boolean existsById(@Param("id") Integer id);
 }

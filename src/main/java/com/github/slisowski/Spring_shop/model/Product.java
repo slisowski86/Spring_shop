@@ -2,13 +2,14 @@ package com.github.slisowski.Spring_shop.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name="products")
 
-public class Product {
+public class Product{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
@@ -17,6 +18,11 @@ public class Product {
 
     private String name;
     private double price;
+    private boolean soldOut;
+    @Column()
+    private LocalDateTime createDate;
+    @Embedded
+    private Audit audit = new Audit();
 
     public Product() {
 
@@ -26,7 +32,7 @@ public class Product {
         return id;
     }
 
-    public void setId(int id) {
+    void setId(int id) {
         this.id = id;
     }
 
@@ -34,7 +40,7 @@ public class Product {
         return description;
     }
 
-    public void setDescription(String description) {
+    void setDescription(String description) {
         this.description = description;
     }
 
@@ -55,4 +61,31 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public boolean isSoldOut() {
+        return soldOut;
+    }
+
+    public void setSoldOut(boolean soldOut) {
+        this.soldOut = soldOut;
+    }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
+    }
+
+    public void updateFrom(final Product source){
+        description=source.description;
+        name = source.name;
+        price= source.price;
+        soldOut= source.soldOut;
+        createDate = source.createDate;
+
+    }
+
+
 }

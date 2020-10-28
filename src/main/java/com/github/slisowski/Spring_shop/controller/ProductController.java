@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -56,13 +57,25 @@ public class ProductController {
 
 
     }
+
     @PutMapping("/products/{id}")
-    ResponseEntity<?> updateProduct(@PathVariable int id, @RequestBody @Valid Product toUpdate){
+    ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Product toUpdate){
         if(!repository.existsById(id)){
             return ResponseEntity.notFound().build();
         }
-        toUpdate.setId(id);
-        repository.save(toUpdate);
+        repository.findById(id)
+                .ifPresent(product -> {product.updateFrom(toUpdate);
+                                        repository.save(toUpdate);});
+        return ResponseEntity.noContent().build();
+    }
+    @Transactional
+    @PatchMapping("/products/{id}")
+    public ResponseEntity<?> toggleProduct(@PathVariable int id){
+        if(!repository.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
+        repository.findById(id)
+                .ifPresent(product -> product.setSoldOut(!product.isSoldOut()));
         return ResponseEntity.noContent().build();
     }
 
