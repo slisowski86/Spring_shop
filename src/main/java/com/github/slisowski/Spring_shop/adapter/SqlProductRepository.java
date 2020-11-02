@@ -1,5 +1,7 @@
-package com.github.slisowski.Spring_shop.model;
+package com.github.slisowski.Spring_shop.adapter;
 
+import com.github.slisowski.Spring_shop.model.Product;
+import com.github.slisowski.Spring_shop.model.ProductRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +19,6 @@ interface SqlProductRepository extends ProductRepository, JpaRepository<Product,
     @Override
     @Query(nativeQuery = true, value="select count(*) > 0 from products where id=:id")
     boolean existsById(@Param("id") Integer id);
+    @Override
+    boolean existsBySoldOutIsFalseAndCategory_Id(Integer categoryId);
 }

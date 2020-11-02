@@ -2,6 +2,8 @@ package com.github.slisowski.Spring_shop.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="category")
@@ -15,6 +17,11 @@ public class Category {
     private String category_name;
     private int amount;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    private Set<Product> products;
+
+    public Category() {
+    }
 
     public int getId() {
         return id;
@@ -46,5 +53,14 @@ public class Category {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    void setProducts(Set<Product> products) {
+        this.products = products;
     }
 }

@@ -23,7 +23,9 @@ public class Product{
     private LocalDateTime createDate;
     @Embedded
     private Audit audit = new Audit();
-
+    @ManyToOne
+    @JoinColumn(name = "category_group_id")
+    private Category category;
     public Product() {
 
     }
@@ -76,6 +78,14 @@ public class Product{
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
+    }
+
+    Audit getAudit() {
+        return audit;
+    }
+
+    void setAudit(Audit audit) {
+        this.audit = audit;
     }
 
     public void updateFrom(final Product source){

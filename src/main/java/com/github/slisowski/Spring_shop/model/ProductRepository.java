@@ -12,7 +12,7 @@ public interface ProductRepository {
 
     List<Product> findAll();
     Optional<Product> findById(Integer id);
-
+    boolean existsBySoldOutIsFalseAndCategory_Id(Integer ctegoryId);
     boolean existsById(Integer id);
     Product save (Product entity);
 
