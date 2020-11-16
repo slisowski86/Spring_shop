@@ -3,7 +3,6 @@ package com.github.slisowski.Spring_shop.controller;
 import com.github.slisowski.Spring_shop.model.Product;
 import com.github.slisowski.Spring_shop.model.ProductRepository;
 ;
-import jdk.jfr.Percentage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -17,30 +16,34 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
     private final ProductRepository repository;
 
+
     public ProductController(final ProductRepository repository) {
         this.repository = repository;
+
     }
 
 
-    @PostMapping("/products")
+    @PostMapping
     ResponseEntity<Product> createProduct(@RequestBody @Valid Product toCreate){
         Product result = repository.save(toCreate);
         return ResponseEntity.created(URI.create("/"+result.getId())).body(result);
     }
-    @GetMapping(value="/products", params ={"!sort", "!page", "!size"})
+    @GetMapping(params ={"!sort", "!page", "!size"})
     ResponseEntity<List<Product>> readAllProducts(){
         logger.warn("Showing all products");
+
         return ResponseEntity.ok(repository.findAll());
      }
 
 
 
 
-     @GetMapping("/products")
+     @GetMapping
     ResponseEntity<List<Product>> readAllProducts(Pageable page){
         logger.info("Custom pageable");
         return ResponseEntity.ok(repository.findAll(page).getContent());
@@ -48,7 +51,7 @@ public class ProductController {
 
 
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/{id}")
             ResponseEntity<Product> readProduct(@PathVariable int id){
 
         return repository.findById(id)
@@ -58,7 +61,14 @@ public class ProductController {
 
     }
 
-    @PutMapping("/products/{id}")
+    @GetMapping("/search/sold_out")
+    ResponseEntity<Product> readSoldProducts(@RequestParam(defaultValue = "true") boolean state){
+        return ResponseEntity.ok(
+                repository.findBySoldOut(state)
+        );
+    }
+
+    @PutMapping("/{id}")
     ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Product toUpdate){
         if(!repository.existsById(id)){
             return ResponseEntity.notFound().build();
@@ -69,7 +79,7 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
     @Transactional
-    @PatchMapping("/products/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> toggleProduct(@PathVariable int id){
         if(!repository.existsById(id)){
             return ResponseEntity.notFound().build();

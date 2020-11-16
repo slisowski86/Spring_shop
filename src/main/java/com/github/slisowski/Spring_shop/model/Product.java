@@ -29,6 +29,19 @@ public class Product{
     public Product() {
 
     }
+    public Product(@NotBlank(message = "Product description must not be empty") String description, String name, double price){
+        this(description, name, price, null);
+    }
+    public Product(@NotBlank(message = "Product description must not be empty") String description, String name, double price, Category category) {
+        this.description = description;
+        this.name = name;
+        this.price = price;
+        if(category !=null){
+            this.category=category;
+        }
+    }
+
+
 
     public int getId() {
         return id;
@@ -86,6 +99,14 @@ public class Product{
 
     void setAudit(Audit audit) {
         this.audit = audit;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public void updateFrom(final Product source){

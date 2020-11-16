@@ -14,13 +14,18 @@ public class Category {
     @NotBlank(message = "Category description must not be empty")
     private String description;
 
-    private String category_name;
+    private String name;
     private int amount;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     private Set<Product> products;
 
     public Category() {
+    }
+
+    public Category(@NotBlank(message = "Category description must not be empty") String description, String name) {
+        this.name = name;
+        this.description = description;
     }
 
     public int getId() {
@@ -39,12 +44,12 @@ public class Category {
         this.description = description;
     }
 
-    public String getCategory_name() {
-        return category_name;
+    public String getName() {
+        return name;
     }
 
-    public void setCategory_name(String category_name) {
-        this.category_name = category_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getAmount() {
@@ -60,7 +65,7 @@ public class Category {
         return products;
     }
 
-    void setProducts(Set<Product> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
     }
 }
