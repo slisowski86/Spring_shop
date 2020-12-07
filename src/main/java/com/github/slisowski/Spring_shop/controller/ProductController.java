@@ -33,13 +33,12 @@ public class ProductController {
         Product result = repository.save(toCreate);
         return ResponseEntity.created(URI.create("/"+result.getId())).body(result);
     }
-    @GetMapping(params ={"!sort", "!page", "!size"})
+    @GetMapping(params ={"!page", "!size", "!sort"})
     ResponseEntity<List<Product>> readAllProducts(){
         logger.warn("Showing all products");
 
         return ResponseEntity.ok(repository.findAll());
      }
-
 
 
 
@@ -61,15 +60,10 @@ public class ProductController {
 
     }
 
-    @GetMapping("/search/sold_out")
-    ResponseEntity<Product> readSoldProducts(@RequestParam(defaultValue = "true") boolean state){
-        return ResponseEntity.ok(
-                repository.findBySoldOut(state)
-        );
-    }
+
 
     @PutMapping("/{id}")
-    ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Product toUpdate){
+    ResponseEntity<?> updateProduct(@PathVariable int id, @RequestBody @Valid Product toUpdate){
         if(!repository.existsById(id)){
             return ResponseEntity.notFound().build();
         }
@@ -78,15 +72,8 @@ public class ProductController {
                                         repository.save(toUpdate);});
         return ResponseEntity.noContent().build();
     }
-    @Transactional
-    @PatchMapping("/{id}")
-    public ResponseEntity<?> toggleProduct(@PathVariable int id){
-        if(!repository.existsById(id)){
-            return ResponseEntity.notFound().build();
-        }
-        repository.findById(id)
-                .ifPresent(product -> product.setSoldOut(!product.isSoldOut()));
-        return ResponseEntity.noContent().build();
-    }
+
+
+
 
 }

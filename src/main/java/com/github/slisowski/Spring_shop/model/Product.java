@@ -1,15 +1,15 @@
 package com.github.slisowski.Spring_shop.model;
 
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 @Table(name="products")
 
-public class Product{
+public class Product {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
@@ -18,27 +18,19 @@ public class Product{
 
     private String name;
     private double price;
-    private boolean soldOut;
-    @Column()
-    private LocalDateTime createDate;
-    @Embedded
-    private Audit audit = new Audit();
-    @ManyToOne
-    @JoinColumn(name = "category_group_id")
-    private Category category;
+
+
+
+
     public Product() {
 
     }
-    public Product(@NotBlank(message = "Product description must not be empty") String description, String name, double price){
-        this(description, name, price, null);
-    }
-    public Product(@NotBlank(message = "Product description must not be empty") String description, String name, double price, Category category) {
+
+    public Product(@NotBlank(message = "Product description must not be empty") String description, String name, double price) {
         this.description = description;
         this.name = name;
         this.price = price;
-        if(category !=null){
-            this.category=category;
-        }
+
     }
 
 
@@ -77,44 +69,14 @@ public class Product{
         this.price = price;
     }
 
-    public boolean isSoldOut() {
-        return soldOut;
-    }
 
-    public void setSoldOut(boolean soldOut) {
-        this.soldOut = soldOut;
-    }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    Audit getAudit() {
-        return audit;
-    }
-
-    void setAudit(Audit audit) {
-        this.audit = audit;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 
     public void updateFrom(final Product source){
         description=source.description;
         name = source.name;
         price= source.price;
-        soldOut= source.soldOut;
-        createDate = source.createDate;
+
 
     }
 

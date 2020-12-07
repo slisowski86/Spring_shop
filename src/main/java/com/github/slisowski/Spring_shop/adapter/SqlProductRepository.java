@@ -19,6 +19,5 @@ interface SqlProductRepository extends ProductRepository, JpaRepository<Product,
     @Override
     @Query(nativeQuery = true, value="select count(*) > 0 from products where id=:id")
     boolean existsById(@Param("id") Integer id);
-    @Override
-    boolean existsBySoldOutIsFalseAndCategory_Id(Integer categoryId);
+
 }
