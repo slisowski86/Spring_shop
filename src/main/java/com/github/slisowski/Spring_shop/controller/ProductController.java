@@ -60,6 +60,13 @@ public class ProductController {
 
     }
 
+    @GetMapping("/search/bought")
+    ResponseEntity<List<Product>> readBoughtProducts(@RequestParam(defaultValue = "true") boolean state){
+        return ResponseEntity.ok(
+                repository.findProductByBought(state)
+        );
+
+    }
 
 
     @PutMapping("/{id}")
@@ -68,8 +75,25 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
         repository.findById(id)
-                .ifPresent(product -> {product.updateFrom(toUpdate);
-                                        repository.save(toUpdate);});
+                .ifPresent(product-> {
+                    product.updateFrom(toUpdate);
+                    repository.save(product);
+                });
+        return ResponseEntity.noContent().build();
+
+
+
+    }
+
+
+    @Transactional
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable int id){
+        if(!repository.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
+        repository.findById(id)
+                .ifPresent(product -> product.setBought(!product.isBought()));
         return ResponseEntity.noContent().build();
     }
 

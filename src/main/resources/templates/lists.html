@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop app: shopping lists</title>
+    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
+</head>
+<body>
+<main>
+    <!--/*@thymesVar id="list" type="com.github.slisowski.Spring_shop.model.projection.ListWriteModel"*/-->
+    <form action="#" method="post" th:action="@{/lists}" th:object="${list}">
+    <fieldset>
+
+        <legend>Nowa lista zakupów</legend>
+        <label>Nazwa listy
+            <input type="text" th:field="*{name}"/>
+        </label>
+        <fieldset>
+            <legend>Produkt 1</legend>
+            <label>Nazwa produktu
+                <input type="text" th:field="*{products[0].name}"/>
+            </label>
+            <label>Opis produktu
+                <input type="text" th:field="*{products[0].description}"/>
+            </label>
+        </fieldset>
+
+
+    </fieldset>
+    </form>
+
+</main>
+
+</body>
+</html>
