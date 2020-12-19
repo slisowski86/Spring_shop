@@ -30,10 +30,14 @@ public class ProductListService {
 
     }
 
-    public List<ListReadModel> readAll() {
-        return repository.findAll().stream()
-                .map(ListReadModel::new)
-                .collect(Collectors.toList());
+    public ShoppingList save(final ListWriteModel toSave){
+        return repository.save(toSave.toShoppingList());
+    }
+
+
+
+    public List<ShoppingList> readAll() {
+        return repository.findAll();
     }
 
 

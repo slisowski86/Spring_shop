@@ -16,6 +16,7 @@ public class ListReadModel {
     private String name;
     private boolean completed;
     private List<ListProductReadModel> products;
+    private LocalDateTime dateCreated;
 
 
 
@@ -27,6 +28,8 @@ public class ListReadModel {
         products=source.getProducts().stream()
                 .map(ListProductReadModel::new)
                 .collect(Collectors.toList());
+        dateCreated = source.getDateCreate();
+
 
 
     }
@@ -54,5 +57,27 @@ public class ListReadModel {
         this.products = products;
     }
 
+    boolean isCompleted() {
+        return completed;
+    }
 
+    void setCompleted(final boolean completed) {
+        this.completed = completed;
+    }
+
+    LocalDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    void setDateCreated(final LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    LocalDateTime getDateCreate() {
+        return dateCreate;
+    }
+
+    void setDateCreate(final LocalDateTime dateCreate) {
+        this.dateCreate = dateCreate;
+    }
 }

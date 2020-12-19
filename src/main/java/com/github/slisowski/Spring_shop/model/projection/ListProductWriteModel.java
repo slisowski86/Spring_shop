@@ -3,10 +3,13 @@ package com.github.slisowski.Spring_shop.model.projection;
 import com.github.slisowski.Spring_shop.model.Product;
 import com.github.slisowski.Spring_shop.model.ShoppingList;
 
-class ListProductWriteModel {
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+
+public class ListProductWriteModel {
 
 
-
+    @NotBlank(message = "Nazwa produktu nie może być pusta ListProductWriteModel")
     private String name;
     private String description;
 

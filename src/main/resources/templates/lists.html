@@ -5,30 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop app: shopping lists</title>
     <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
+    <style>
+        .Bd{
+            border: solid 1px black;
+        }
+
+        .Bdc\(red\){
+            border-color: red !important;
+        }
+
+        .P\(0\){
+            padding: 0;
+        }
+        .P\(10px\){
+            padding: 10px;
+        }
+
+        .C\(red\){
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <main>
-    <!--/*@thymesVar id="list" type="com.github.slisowski.Spring_shop.model.projection.ListWriteModel"*/-->
-    <form action="#" method="post" th:action="@{/lists}" th:object="${list}">
-    <fieldset>
 
+    <h1 th:if="${message != null}" th:text="${message}"></h1>
+    <!--/*@thymesVar id="lists" type="com.github.slisowski.Spring_shop.model.ShoppingList"*/-->
+    <dl th:each="list : ${lists}" class="Bd P(10px)">
+        <dt th:text="|${list.name} ${list.dateCreate}|">...</dt>
+        <dd>
+            <ul class="P(0)">
+                <li th:each="product : ${list.products}" th:text="${product.name}"></li>
+            </ul>
+        </dd>
+    </dl>
+    <fieldset>
         <legend>Nowa lista zakupów</legend>
+
+
+        <!--/*@thymesVar id="list" type="com.github.slisowski.Spring_shop.model.projection.ListWriteModel"*/-->
+    <form action="#" method="post" th:action="@{/lists}" th:object="${list}">
+        <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}"></p>
+
+
+
+
+
         <label>Nazwa listy
-            <input type="text" th:field="*{name}"/>
+            <input type="text" th:field="*{name}"  th:errorclass="'Bdc(red)'"/>
         </label>
-        <fieldset>
-            <legend>Produkt 1</legend>
+        <label>Data utworzenia
+            <input name="datecreate" type="datetime-local" th:field="${list.dateCreated}">
+        </label>
+        <fieldset th:each="product, productStat: *{products}">
+            <legend th:text="|Produkt ${productStat.index+1}|">Produkt 1</legend>
             <label>Nazwa produktu
-                <input type="text" th:field="*{products[0].name}"/>
+                <input type="text" th:field="*{products[__${productStat.index}__].name}" th:errorclass="'Bdc(red)'"/>
             </label>
             <label>Opis produktu
-                <input type="text" th:field="*{products[0].description}"/>
+                <input type="text" th:field="*{products[__${productStat.index}__].description}" th:errorclass="'Bdc(red)'"/>
             </label>
         </fieldset>
+        <div>
+            <button type="submit" name ="addProduct">+</button>
+        </div>
+            <p>
+                <button type="submit">Dodaj</button>
+                <button type="reset">Wyczyść</button>
+            </p>
 
 
-    </fieldset>
     </form>
+    </fieldset>
+
+
 
 </main>
 

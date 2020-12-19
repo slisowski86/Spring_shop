@@ -16,6 +16,6 @@ import java.util.Optional;
 interface SqlShoppingListRepository extends ShoppingListRepository, JpaRepository<ShoppingList, Integer> {
 
     @Override
-    @Query("from ShoppingList l join fetch l.products")
+    @Query("select distinct l from ShoppingList l join fetch l.products")
     List<ShoppingList> findAll();
 }

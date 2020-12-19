@@ -15,7 +15,7 @@ public class Product {
     private int id;
 
     private String description;
-
+    @NotBlank(message = "nazwa produktu nie może być pusta")
     private String name;
     private double price;
 

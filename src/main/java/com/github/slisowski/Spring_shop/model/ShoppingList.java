@@ -14,6 +14,7 @@ public class ShoppingList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private boolean completed;
+    @NotBlank(message = "nazwa listy nie może być pusta")
     private String name;
     @ManyToMany(cascade={CascadeType.MERGE,CascadeType.PERSIST})
     @JoinTable(name="shopping_list_products",
@@ -65,6 +66,10 @@ public class ShoppingList {
     public void setCompleted(final boolean completed) {
         this.completed = completed;
     }
+
+
+
+
 
     public LocalDateTime getDateCreate() {
         return dateCreate;
