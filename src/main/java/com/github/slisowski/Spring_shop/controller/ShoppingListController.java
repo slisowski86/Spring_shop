@@ -49,6 +49,8 @@ class ShoppingListController {
     }*/
 
 
+
+
     @GetMapping
     String showLists(Model model){
 
@@ -56,6 +58,7 @@ class ShoppingListController {
         model.addAttribute("list", new ListWriteModel() );
         return "lists";
     }
+
 
     @PostMapping(params = "addProduct")
     String addListProduct(@ModelAttribute("list") ListWriteModel current){
@@ -79,6 +82,7 @@ class ShoppingListController {
 
         service.save(current);
         model.addAttribute("list", new ListWriteModel());
+        model.addAttribute("lists", getLists());
         model.addAttribute("message", "Dodano listę zakupów");
         return "lists";
     }

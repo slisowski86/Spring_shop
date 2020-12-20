@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAV app: products</title>
+    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
+</head>
+<body>
+<main>
+    <fieldset>
+        <form>
+            <label>Nazwa produktu
+                <input type="text" name="name" />
+            </label>
+
+            <button type="submit">Dodaj!</button>
+        </form>
+    </fieldset>
+</main>
+<script>
+    (async function() {
+        const main = document.querySelector('main');
+        const params = new URLSearchParams(location.search);
+        const response = params.has('list') ? await fetch(`/lists/${params.get('list')}`) : await fetch('/products');
+        if (response.ok) {
+            const products = await response.json();
+            const list = document.createElement('ul');
+            products.forEach(product => list.appendChild(createProduct(product)));
+            main.prepend(list);
+        }
+        const form = document.querySelector('form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const resp = await fetch('/products', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: form.elements.name.value
+                })
+            });
+            if (resp.ok) {
+                const productFromServer = await resp.json();
+                document.querySelector('ul').appendChild(createProduct(productFromServer));
+                form.reset();
+            }
+        });
+
+        function createProduct({ id, name, bought }) {
+            const result = document.createElement('li');
+            result.innerHTML = `
+                <label>
+                    <input type="checkbox" ${bought ? ' checked' : ''}/>
+                    ${name}
+
+                </label>
+            `;
+            result.querySelector('input').addEventListener('click', async (e) => {
+                const response = await fetch(`/products/${id}`, { method: 'PATCH' });
+                if (!response.ok) {
+                    e.target.checked = !e.target.checked;
+                }
+            });
+            return result;
+        }
+    })();
+</script>
+</body>
+</html>

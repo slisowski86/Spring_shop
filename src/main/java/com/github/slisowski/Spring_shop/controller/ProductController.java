@@ -3,9 +3,11 @@ package com.github.slisowski.Spring_shop.controller;
 import com.github.slisowski.Spring_shop.model.Product;
 import com.github.slisowski.Spring_shop.model.ProductRepository;
 ;
+import com.github.slisowski.Spring_shop.model.projection.ListProductReadModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -27,17 +29,17 @@ public class ProductController {
 
     }
 
-
-    @PostMapping
+    @ResponseBody
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Product> createProduct(@RequestBody @Valid Product toCreate){
         Product result = repository.save(toCreate);
         return ResponseEntity.created(URI.create("/"+result.getId())).body(result);
     }
     @GetMapping(params ={"!page", "!size", "!sort"})
-    ResponseEntity<List<Product>> readAllProducts(){
+    ResponseEntity<List<ListProductReadModel>> readAllProducts(){
         logger.warn("Showing all products");
 
-        return ResponseEntity.ok(repository.findAll());
+        return ResponseEntity.ok(service.findAll());
      }
 
 
