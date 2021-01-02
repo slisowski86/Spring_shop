@@ -65,7 +65,7 @@ public class ListReadModel {
         this.completed = completed;
     }
 
-    LocalDateTime getDateCreated() {
+    public LocalDateTime getDateCreated() {
         return dateCreated;
     }
 

@@ -30,14 +30,10 @@
 <main>
 
     <h1 th:if="${message != null}" th:text="${message}"></h1>
-    <!--/*@thymesVar id="lists" type="com.github.slisowski.Spring_shop.model.ShoppingList"*/-->
-    <dl th:each="list : ${lists}" class="Bd P(10px)">
-        <dt th:text="|${list.name} ${list.dateCreate}|">...</dt>
-        <dd>
-            <ul class="P(0)">
-                <li th:each="product : ${list.products}" th:text="${product.name}"></li>
-            </ul>
-        </dd>
+    <!--/*@thymesVar id="lists" type="java.util.List<com.github.slisowski.Spring_shop.model.projection.ListReadModel>"*/-->
+    <dl th:each=" list : ${lists}" class="Bd P(10px)">
+      <a th:href ="@{lists/showProducts(shoppingList_ID=${list.getId()})}"> <dt th:text="|${list.name}|">...</dt></a>
+
     </dl>
     <fieldset>
         <legend>Nowa lista zakupów</legend>

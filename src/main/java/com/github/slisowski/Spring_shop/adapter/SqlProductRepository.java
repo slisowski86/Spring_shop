@@ -24,6 +24,8 @@ interface SqlProductRepository extends ProductRepository, JpaRepository<Product,
     @Override
     boolean existsByBoughtIsFalseAndShoppingLists_Id(Integer id);
 
+
+
 }
 
 

@@ -3,6 +3,7 @@ package com.github.slisowski.Spring_shop.model.projection;
 import com.github.slisowski.Spring_shop.model.Product;
 
 public class ListProductReadModel {
+    private int id;
     private String name;
     private boolean bought;
 
@@ -11,6 +12,15 @@ public class ListProductReadModel {
         bought= source.isBought();
 
     }
+
+    public int getId() {
+        return id;
+    }
+
+    void setId(final int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }

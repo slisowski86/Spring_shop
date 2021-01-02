@@ -8,5 +8,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+    database-platform: org.hibernate.dialect.H2Dialect
 product.allowMultipleProductInList: false
+
 

@@ -1,16 +1,16 @@
 package com.github.slisowski.Spring_shop.logic;
 
 
+import com.github.slisowski.Spring_shop.model.Product;
 import com.github.slisowski.Spring_shop.model.ProductRepository;
 import com.github.slisowski.Spring_shop.model.ShoppingList;
 import com.github.slisowski.Spring_shop.model.ShoppingListRepository;
-import com.github.slisowski.Spring_shop.model.projection.ListProductReadModel;
 import com.github.slisowski.Spring_shop.model.projection.ListReadModel;
 import com.github.slisowski.Spring_shop.model.projection.ListWriteModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class ProductListService {
@@ -38,6 +38,19 @@ public class ProductListService {
 
     public List<ShoppingList> readAll() {
         return repository.findAll();
+    }
+
+    public List<Product> showProducts(int listId){
+        List<Product> result = productRepository.findProductsByShoppingLists_Id(listId);
+        return result;
+
+    }
+
+    public ListReadModel findList(Integer id){
+        ShoppingList list = repository.findById(id).orElseThrow(()->new IllegalArgumentException("Lista zakupów z podanym id nie sitnieje"));
+
+        return new ListReadModel(list);
+
     }
 
 

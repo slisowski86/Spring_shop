@@ -9,10 +9,12 @@ import com.github.slisowski.Spring_shop.model.projection.ListReadModel;
 import com.github.slisowski.Spring_shop.model.projection.ListWriteModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -60,6 +62,19 @@ class ShoppingListController {
     }
 
 
+    @GetMapping (value = "/showProducts")
+    String  showProducts(Model model, @RequestParam(value = "shoppingList_ID", required = false) Integer id){
+        //model.addAttribute("id", id);
+        ListReadModel currentList = service.findList(id);
+        List<Product> products = service.showProducts(id);
+        model.addAttribute("currentList", currentList);
+        model.addAttribute("products", products);
+        return "showProducts";
+
+
+    }
+
+
     @PostMapping(params = "addProduct")
     String addListProduct(@ModelAttribute("list") ListWriteModel current){
         logger.info("Metoda addListProduct");
@@ -86,6 +101,8 @@ class ShoppingListController {
         model.addAttribute("message", "Dodano listę zakupów");
         return "lists";
     }
+
+
 
     @ModelAttribute("lists")
     List<ShoppingList> getLists(){

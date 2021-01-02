@@ -3,7 +3,6 @@ package com.github.slisowski.Spring_shop.model.projection;
 import com.github.slisowski.Spring_shop.model.Product;
 import com.github.slisowski.Spring_shop.model.ShoppingList;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 public class ListProductWriteModel {
@@ -31,7 +30,7 @@ public class ListProductWriteModel {
         this.description = description;
     }
 
-    public Product toProduct(final ShoppingList list){
+    public Product toProduct(final ShoppingList result){
         return new Product(name, description);
     }
 }

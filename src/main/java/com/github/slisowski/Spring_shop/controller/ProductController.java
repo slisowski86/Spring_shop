@@ -4,9 +4,9 @@ import com.github.slisowski.Spring_shop.model.Product;
 import com.github.slisowski.Spring_shop.model.ProductRepository;
 ;
 import com.github.slisowski.Spring_shop.model.projection.ListProductReadModel;
+import com.github.slisowski.Spring_shop.model.projection.ListProductWriteModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,35 +24,33 @@ public class ProductController {
     private final ProductRepository repository;
 
 
+
+
     public ProductController(final ProductRepository repository) {
         this.repository = repository;
+
 
     }
 
     @ResponseBody
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping()
     ResponseEntity<Product> createProduct(@RequestBody @Valid Product toCreate){
-        Product result = repository.save(toCreate);
+       Product result = repository.save(toCreate);
         return ResponseEntity.created(URI.create("/"+result.getId())).body(result);
     }
-    @GetMapping(params ={"!page", "!size", "!sort"})
-    ResponseEntity<List<ListProductReadModel>> readAllProducts(){
+    @ResponseBody
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<List<Product>> readAllProducts(){
         logger.warn("Showing all products");
 
-        return ResponseEntity.ok(service.findAll());
+        return ResponseEntity.ok(repository.findAll());
      }
 
 
 
-     @GetMapping
-    ResponseEntity<List<Product>> readAllProducts(Pageable page){
-        logger.info("Custom pageable");
-        return ResponseEntity.ok(repository.findAll(page).getContent());
-    }
 
 
-
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
             ResponseEntity<Product> readProduct(@PathVariable int id){
 
         return repository.findById(id)

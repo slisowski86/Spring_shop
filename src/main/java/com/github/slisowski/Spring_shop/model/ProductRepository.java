@@ -23,5 +23,5 @@ public interface ProductRepository {
     List<Product> findProductByBought(boolean bought);
 
 
-    List<Product> findAllByShoppingLists_Id(Integer listId);
+    List<Product> findProductsByShoppingLists_Id(Integer id);
 }
