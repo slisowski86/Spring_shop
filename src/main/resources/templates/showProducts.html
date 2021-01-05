@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,14 @@
 <p th:text="${currentList.dateCreated}"/>
 <!--/*@thymesVar id="products" type=java.util.List<"com.github.slisowski.Spring_shop.model.projection.ListProductReadModel">*/-->
 <ul th:each="product : ${products}">
-    <li th:text="${product.getName()}">
+    <li>
+        <input type = "checkbox" name="bought" th:checked="${product.bought}">
+        <label th:text="${product.getName()}">
+
+        </label>
+
+
+
 
 
     </li>

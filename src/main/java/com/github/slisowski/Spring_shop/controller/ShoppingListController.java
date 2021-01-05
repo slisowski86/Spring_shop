@@ -9,6 +9,7 @@ import com.github.slisowski.Spring_shop.model.projection.ListReadModel;
 import com.github.slisowski.Spring_shop.model.projection.ListWriteModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +54,7 @@ class ShoppingListController {
 
 
 
-    @GetMapping
+    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     String showLists(Model model){
 
 
@@ -64,7 +65,7 @@ class ShoppingListController {
 
     @GetMapping (value = "/showProducts")
     String  showProducts(Model model, @RequestParam(value = "shoppingList_ID", required = false) Integer id){
-        //model.addAttribute("id", id);
+
         ListReadModel currentList = service.findList(id);
         List<Product> products = service.showProducts(id);
         model.addAttribute("currentList", currentList);
@@ -101,6 +102,7 @@ class ShoppingListController {
         model.addAttribute("message", "Dodano listę zakupów");
         return "lists";
     }
+
 
 
 

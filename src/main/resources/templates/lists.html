@@ -31,10 +31,11 @@
 
     <h1 th:if="${message != null}" th:text="${message}"></h1>
     <!--/*@thymesVar id="lists" type="java.util.List<com.github.slisowski.Spring_shop.model.projection.ListReadModel>"*/-->
-    <dl th:each=" list : ${lists}" class="Bd P(10px)">
-      <a th:href ="@{lists/showProducts(shoppingList_ID=${list.getId()})}"> <dt th:text="|${list.name}|">...</dt></a>
+   <dl th:each=" list : ${lists}" class="Bd P(10px)">
+      <a th:href ="@{lists/showProducts(shoppingList_ID=${list.id})}"> <dt th:text="|${list.name}|">...</dt></a>
 
     </dl>
+
     <fieldset>
         <legend>Nowa lista zakupów</legend>
 
