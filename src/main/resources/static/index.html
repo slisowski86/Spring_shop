@@ -5,32 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAV App</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script>
+        function includeHTML() {
+            var z, i, elmnt, file, xhttp;
+            /* Loop through a collection of all HTML elements: */
+            z = document.getElementsByTagName("*");
+            for (i = 0; i < z.length; i++) {
+                elmnt = z[i];
+                /*search for elements with a certain atrribute:*/
+                file = elmnt.getAttribute("w3-include-html");
+                if (file) {
+                    /* Make an HTTP request using the attribute value as the file name: */
+                    xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4) {
+                            if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+                            if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+                            /* Remove the attribute, and call this function once more: */
+                            elmnt.removeAttribute("w3-include-html");
+                            includeHTML();
+                        }
+                    }
+                    xhttp.open("GET", file, true);
+                    xhttp.send();
+                    /* Exit the function: */
+                    return;
+                }
+            }
+        }
+    </script>
+
+
+</head>
+
+
 <body>
-<header>
 
-<div class="container">
-    <div class="top-menu">
-    <h1>Food And Vegatables App</h1>
+    <div class="container">
+        <div class = "top-menu">
+            <div w3-include-html="header.html"></div>
+        </div>
+        <div class="left-panel">
+            <div w3-include-html="leftPanel.html"></div>
 
-    <p>Make your life better!</p>
+        </div>
+        <div class="main">
+
+        </div>
     </div>
-    <div class="left-panel">
-    <nav>
-        <ul>
-            <li>
-                <a href="/lists.html">Listy produktów</a>
-            </li>
 
-            <li>
-                <a href="/products.html">Produkty</a>
-            </li>
-        </ul>
-    </nav>
-</div>
-    <div class="main">
-        <h1>abc</h1>
-    </div>
-</div>
-</header>
+
+
+
+<script>
+    includeHTML();
+</script>
 </body>
+
 </html>
