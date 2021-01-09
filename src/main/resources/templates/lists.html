@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop app: shopping lists</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/style.css" />
     <script>
         function includeHTML() {
             var z, i, elmnt, file, xhttp;
@@ -62,10 +62,10 @@
 
 <div class="container">
     <div class = "top-menu">
-        <div w3-include-html="header.html"></div>
+        <div w3-include-html="/layout/header.html"></div>
     </div>
     <div class="left-panel">
-        <div w3-include-html="leftPanel.html"></div>
+        <div w3-include-html="/layout/leftPanel.html"></div>
 
     </div>
     <div class="main">
@@ -95,6 +95,7 @@
                     <input name="datecreate" type="datetime-local" th:field="${list.dateCreated}">
                 </label>
                 <fieldset th:each="product, productStat: *{products}">
+                    
                     <legend th:text="|Produkt ${productStat.index+1}|">Produkt 1</legend>
                     <label>Nazwa produktu
                         <input type="text" th:field="*{products[__${productStat.index}__].name}" th:errorclass="'Bdc(red)'"/>

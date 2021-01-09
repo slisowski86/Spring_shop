@@ -1,4 +1,6 @@
 spring:
+
+
   h2:
     console:
       enabled: true
@@ -10,6 +12,8 @@ spring:
       ddl-auto: validate
 
     database-platform: org.hibernate.dialect.H2Dialect
+
 product.allowMultipleProductInList: false
+
 
 

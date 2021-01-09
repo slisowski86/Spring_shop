@@ -3,14 +3,18 @@ package com.github.slisowski.Spring_shop.controller;
 
 import com.github.slisowski.Spring_shop.logic.ProductListService;
 import com.github.slisowski.Spring_shop.model.Product;
+import com.github.slisowski.Spring_shop.model.ProductRepository;
 import com.github.slisowski.Spring_shop.model.ShoppingList;
 import com.github.slisowski.Spring_shop.model.projection.ListProductWriteModel;
 import com.github.slisowski.Spring_shop.model.projection.ListReadModel;
 import com.github.slisowski.Spring_shop.model.projection.ListWriteModel;
+import com.github.slisowski.Spring_shop.model.projection.ProductWriteModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +29,11 @@ class ShoppingListController {
     private static final Logger logger = LoggerFactory.getLogger(ShoppingListController.class);
 
     private final ProductListService service;
+    private final ProductRepository repository;
 
-    ShoppingListController(final ProductListService service) {
+    ShoppingListController(final ProductListService service, final ProductRepository repository) {
         this.service = service;
+        this.repository = repository;
     }
 
     /*private static final Logger logger = LoggerFactory.getLogger(ShoppingListController.class);
@@ -73,6 +79,16 @@ class ShoppingListController {
 
     }
 
+    @PostMapping(params = "selectProduct")
+    String selectProduct(@ModelAttribute("list") ListWriteModel current){
+        logger.info("Metoda addListProduct");
+        current.getProducts().add(new ListProductWriteModel());
+        return "lists";
+
+    }
+
+
+
 
     @PostMapping(params = "addProduct")
     String addListProduct(@ModelAttribute("list") ListWriteModel current){
@@ -109,6 +125,8 @@ class ShoppingListController {
 
         return service.readAll();
     }
+
+
 
    /*@GetMapping(params={"!page, !size,!sort"})
     ResponseEntity<List<ListReadModel>> readAllLists(){

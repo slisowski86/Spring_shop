@@ -5,6 +5,7 @@
     grid-gap: 10px;
 }
 .top-menu{
+    text-align: center;
     grid-column: 2/6;
     grid-row: 1/2;
     background-color: whitesmoke;
@@ -18,6 +19,11 @@
     border: 2px black;
     border-radius: 5px;
     
+}
+
+.left-panel ul{
+    list-style-type: none;
+
 }
 
 .main{
