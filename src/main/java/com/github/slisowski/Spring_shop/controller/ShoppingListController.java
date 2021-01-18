@@ -1,26 +1,26 @@
 package com.github.slisowski.Spring_shop.controller;
 
 
-import com.github.slisowski.Spring_shop.logic.ProductListService;
+import com.github.slisowski.Spring_shop.logic.servicerepo.ShoppingListRepoService;
+import com.github.slisowski.Spring_shop.logic.servicerepo.ProductRepoService;
 import com.github.slisowski.Spring_shop.model.Product;
 import com.github.slisowski.Spring_shop.model.ProductRepository;
 import com.github.slisowski.Spring_shop.model.ShoppingList;
-import com.github.slisowski.Spring_shop.model.projection.ListProductWriteModel;
-import com.github.slisowski.Spring_shop.model.projection.ListReadModel;
-import com.github.slisowski.Spring_shop.model.projection.ListWriteModel;
-import com.github.slisowski.Spring_shop.model.projection.ProductWriteModel;
+
+import com.github.slisowski.Spring_shop.model.ShoppingListRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/lists")
@@ -28,18 +28,23 @@ class ShoppingListController {
 
     private static final Logger logger = LoggerFactory.getLogger(ShoppingListController.class);
 
-    private final ProductListService service;
+    private final ShoppingListRepoService service;
     private final ProductRepository repository;
+    private final ShoppingListRepository shoppingListRepository;
+    private final ProductRepoService productService;
 
-    ShoppingListController(final ProductListService service, final ProductRepository repository) {
+
+    ShoppingListController(final ShoppingListRepoService service, final ProductRepository repository, final ShoppingListRepository shoppingListRepository, final ProductRepoService productService) {
         this.service = service;
         this.repository = repository;
+        this.shoppingListRepository = shoppingListRepository;
+        this.productService = productService;
     }
 
     /*private static final Logger logger = LoggerFactory.getLogger(ShoppingListController.class);
 
     private final ShoppingListRepository repository;
-    private final ProductListService service;
+    private final ShoppingListService service;
 
     ShoppingListController(final ShoppingListRepository repository, final ProductListService service) {
 
@@ -54,24 +59,68 @@ class ShoppingListController {
         ListReadModel result = service.createList(toCreate);
        return ResponseEntity.created(URI.create("/"+result.getId())).body(result);
     }*/
-
-
-
-
-    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping
     String showLists(Model model){
 
+        Set<ShoppingList> lists = service.findAll();
+        model.addAttribute("updatedLists",  lists);
+        return "shoppingLists/lists";
+    }
+    @PostMapping(value ="/new" ,produces = MediaType.TEXT_HTML_VALUE, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    String addList(Model model, @Valid ShoppingList currentList ,
+                   BindingResult bindingResult){
 
-        model.addAttribute("list", new ListWriteModel() );
-        return "lists";
+
+            if (bindingResult.hasErrors()) {
+                return "shoppingLists/lists";
+            }
+         ShoppingList savedList= service.save(currentList);
+
+        return "redirect:/lists/addProducts/" + savedList.getId();
+
+
     }
 
 
-    @GetMapping (value = "/showProducts")
-    String  showProducts(Model model, @RequestParam(value = "shoppingList_ID", required = false) Integer id){
 
-        ListReadModel currentList = service.findList(id);
-        List<Product> products = service.showProducts(id);
+
+    @GetMapping(value="/new", produces = MediaType.TEXT_HTML_VALUE)
+    String showCreateGroupForm(Model model)
+    {
+
+
+        model.addAttribute("list", ShoppingList.builder().build() );
+
+        return "shoppingLists/new";
+    }
+
+    @GetMapping("/addProducts/{shoppingListId}")
+    public ModelAndView showShoppingList(@PathVariable Long shoppingListId) {
+        List<Product> products=new ArrayList<>();
+        Set<Product> productsToAdd = productService.findAll();
+        ModelAndView mav = new ModelAndView("shoppingLists/addProducts");
+        mav.addObject("newList", service.findById(shoppingListId));
+        mav.addObject("products", products);
+        mav.addObject("productsToAdd", productsToAdd);
+        return mav;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    @GetMapping (value = "/showProducts")
+    String  showProducts(Model model, @RequestParam(value = "shoppingList_ID", required = false) Long id){
+
+        ShoppingList currentList = service.findById(id);
+        List<Product> products = productService.findProductsByShoppingLists_Id(id);
         model.addAttribute("currentList", currentList);
         model.addAttribute("products", products);
         return "showProducts";
@@ -79,52 +128,26 @@ class ShoppingListController {
 
     }
 
-    @PostMapping(params = "selectProduct")
-    String selectProduct(@ModelAttribute("list") ListWriteModel current){
-        logger.info("Metoda addListProduct");
-        current.getProducts().add(new ListProductWriteModel());
-        return "lists";
-
-    }
 
 
 
 
-    @PostMapping(params = "addProduct")
-    String addListProduct(@ModelAttribute("list") ListWriteModel current){
-        logger.info("Metoda addListProduct");
-        current.getProducts().add(new ListProductWriteModel());
-        return "lists";
-
-    }
-
-    @PostMapping
-    String addList(
-            @ModelAttribute ("list") @Valid ListWriteModel current,
-            BindingResult bindingResult,
-            Model model){
-
-        if(bindingResult.hasErrors()){
-            return "lists";
-        }
-
-
-
-        service.save(current);
-        model.addAttribute("list", new ListWriteModel());
-        model.addAttribute("lists", getLists());
-        model.addAttribute("message", "Dodano listę zakupów");
-        return "lists";
-    }
 
 
 
 
-    @ModelAttribute("lists")
-    List<ShoppingList> getLists(){
 
-        return service.readAll();
-    }
+
+
+
+
+
+
+
+
+
+
+}
 
 
 
@@ -158,4 +181,4 @@ class ShoppingListController {
     }*/
 
 
-}
+

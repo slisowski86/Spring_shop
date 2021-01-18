@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAV app: products</title>
-    <link rel="stylesheet" href="/style.css">>
+    <title>Shop app: shopping lists</title>
+    <link rel="stylesheet" href="/style.css" />
     <script>
         function includeHTML() {
             var z, i, elmnt, file, xhttp;
@@ -34,47 +34,62 @@
             }
         }
     </script>
-</head>
 
+</head>
+<style>
+    .Bd{
+        border: solid 1px black;
+    }
+
+    .Bdc\(red\){
+        border-color: red !important;
+    }
+
+    .P\(0\){
+        padding: 0;
+    }
+    .P\(10px\){
+        padding: 10px;
+    }
+
+    .C\(red\){
+        color: red;
+    }
+</style>
+</head>
 <body>
 
-    <div class="container">
-        <div class="top-menu">
-            <div w3-include-html="/layout/header.html"></div>
 
-
-        </div>
-        <div class="left-panel">
-            <div w3-include-html="/layout/leftPanel.html"></div>
-        </div>
-
-        <div class="main">
-            <!--/*@thymesVar id="products" type="java.util.List<com.github.slisowski.Spring_shop.model.Product">*/-->
-
-
-            <fieldset>
-                <!--/*@thymesVar id="product" type="com.github.slisowski.Spring_shop.model.projection.Product"*/-->
-                <form action = "#" method="post" th:action="@{/products}" th:object="${product}" >
-                    <label>Nazwa produktu
-                        <input type="text" th:field = "*{name}"  />
-                    </label>
-                    <label>Opis produktu
-                        <input type="text" th:field = "*{description}"  />
-                    </label>
-
-                    <button type="submit">Dodaj!</button>
-                </form>
-
-
-            </fieldset>
-
-
-        </div>
+<div class="container">
+    <div class = "top-menu">
+        <div w3-include-html="/layout/header.html"></div>
+    </div>
+    <div class="left-panel">
+        <div w3-include-html="/layout/leftPanel.html"></div>
 
     </div>
+    <div class="main">
+        <h2>Owner Information</h2>
+
+        <!--/*@thymesVar id="newList" type="com.github.slisowski.Spring_shop.model.ShoppingList"*/-->
+        <table class="table table-striped" th:object="${newList}">
+            <tr>
+                <th>Name</th>
+                <td><b th:text="*{name}"></b></td>
+            </tr>
+
+
+        </table>
+
+    </div>
+</div>
+
+
 
 <script>
     includeHTML();
 </script>
+
+
 </body>
 </html>

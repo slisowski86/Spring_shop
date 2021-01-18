@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAV App</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Shop app: shopping lists</title>
+    <link rel="stylesheet" href="/style.css" />
     <script>
         function includeHTML() {
             var z, i, elmnt, file, xhttp;
@@ -35,33 +35,64 @@
         }
     </script>
 
-
 </head>
+    <style>
+        .Bd{
+            border: solid 1px black;
+        }
 
+        .Bdc\(red\){
+            border-color: red !important;
+        }
 
+        .P\(0\){
+            padding: 0;
+        }
+        .P\(10px\){
+            padding: 10px;
+        }
+
+        .C\(red\){
+            color: red;
+        }
+    </style>
+</head>
 <body>
 
 
-
-    <div class="container">
-        <div class = "top-menu">
-            <div w3-include-html="/layout/header.html"></div>
-        </div>
-        <div class="left-panel">
-            <div w3-include-html="/layout/leftPanel.html"></div>
-
-        </div>
-        <div class="main">
-
-        </div>
+<div class="container">
+    <div class = "top-menu">
+        <div w3-include-html="/layout/header.html"></div>
     </div>
+    <div class="left-panel">
+        <div w3-include-html="/layout/leftPanel.html"></div>
 
+    </div>
+    <div class="main">
+        <a href="/lists/new"><button>Dodaj produkty</button></a>
+
+        <!--/*@thymesVar id="updatedLists" type="java.util.Set<com.github.slisowski.Spring_shop.model.ShoppingList>"*/-->
+        <dl th:each="list : ${updatedLists}" class="Bd P(10px)">
+
+           <a th:href ="@{shoppingLists/showProducts(shoppingList_ID=${list.id})}"><dt th:text="${list.name}">...</dt></a>
+
+        </dl>
+        <!--/*@thymesVar id="showList" type="com.github.slisowski.Spring_shop.model.ShoppingList"*/-->
+
+
+
+
+
+
+    </div>
+</div>
 
 
 
 <script>
     includeHTML();
 </script>
-</body>
 
+
+</body>
 </html>

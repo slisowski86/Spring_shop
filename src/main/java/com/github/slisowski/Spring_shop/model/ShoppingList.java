@@ -1,81 +1,54 @@
 package com.github.slisowski.Spring_shop.model;
 
 
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+@Setter
+@Getter
 
+@AllArgsConstructor
 @Entity
 @Table(name="shopping_list")
-public class ShoppingList {
+public class ShoppingList extends BaseModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+
     private boolean completed;
-    @NotBlank(message = "nazwa listy nie może być pusta")
+
     private String name;
-    @ManyToMany(cascade={CascadeType.MERGE,CascadeType.PERSIST})
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="shopping_list_products",
             joinColumns = @JoinColumn(name = "shopping_list_id"),
             inverseJoinColumns = @JoinColumn(name="product_id"))
-    private List<Product> products;
+    private Set<Product> products = new HashSet<>();
 
 
 
     private LocalDateTime dateCreate;
 
+    public ShoppingList(){
 
 
-    public ShoppingList() {
     }
 
 
+    @Builder
+    public ShoppingList(boolean completed,Long id, String name, Set<Product> products, LocalDateTime dateCreate ) {
+        this.completed=completed;
+        this.name=name;
+        this.products=products;
+        this.dateCreate=dateCreate;
 
-    public int getId() {
-        return id;
-    }
-
-
-
-    public void setId(final int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(final List<Product> products) {
-        this.products = products;
-    }
-
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(final boolean completed) {
-        this.completed = completed;
     }
 
 
 
 
 
-    public LocalDateTime getDateCreate() {
-        return dateCreate;
-    }
-
-    public void setDateCreate(final LocalDateTime dateCreate) {
-        this.dateCreate = dateCreate;
-    }
 }

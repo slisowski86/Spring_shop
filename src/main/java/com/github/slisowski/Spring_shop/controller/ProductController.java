@@ -2,11 +2,8 @@ package com.github.slisowski.Spring_shop.controller;
 
 import com.github.slisowski.Spring_shop.model.Product;
 import com.github.slisowski.Spring_shop.model.ProductRepository;
-;
-import com.github.slisowski.Spring_shop.model.projection.ListProductReadModel;
-import com.github.slisowski.Spring_shop.model.projection.ListProductWriteModel;
-import com.github.slisowski.Spring_shop.model.projection.ListWriteModel;
-import com.github.slisowski.Spring_shop.model.projection.ProductWriteModel;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -20,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/products")
@@ -44,10 +42,10 @@ public class ProductController {
     }*/
 
     @PostMapping
-    String addNewProduct(@ModelAttribute("product") ProductWriteModel current, Model model){
+    String addNewProduct(@ModelAttribute("product") Product current, Model model){
 
-        repository.save(current.toProduct());
-        model.addAttribute("product", new ProductWriteModel());
+        repository.save(current);
+        model.addAttribute("product", new Product());
         model.addAttribute("products", getProducts());
         model.addAttribute("message", "Dodano produkt!");
 
@@ -57,8 +55,8 @@ public class ProductController {
 
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
-    String showGroups(@ModelAttribute("product") ProductWriteModel current, Model model) {
-        model.addAttribute("product", new ProductWriteModel());
+    String showGroups(@ModelAttribute("product") Product current, Model model) {
+        model.addAttribute("product", new Product());
 
         return "products";
     }
@@ -104,16 +102,7 @@ public class ProductController {
     }*/
 
 
-    @Transactional
-    @PatchMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable int id){
-        if(!repository.existsById(id)){
-            return ResponseEntity.notFound().build();
-        }
-        repository.findById(id)
-                .ifPresent(product -> product.setBought(!product.isBought()));
-        return ResponseEntity.noContent().build();
-    }
+
 
     @ModelAttribute("products")
     List<Product> getProducts() {

@@ -1,26 +1,32 @@
 package com.github.slisowski.Spring_shop.model;
 
 
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="products")
 
-public class Product {
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+public class Product extends BaseModel {
+
 
     private String description;
-    @NotBlank(message = "nazwa produktu nie może być pusta")
+
     private String name;
     private double price;
 
-    @ManyToMany(mappedBy = "products")
-    private List<ShoppingList> shoppingLists;
+    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL)
+    private Set<ShoppingList> shoppingLists = new HashSet<>();
 
 
     private boolean bought;
@@ -31,67 +37,13 @@ public class Product {
 
 
 
-    public Product() {
 
-    }
-
-    public Product(String name, String description) {
-
+    @Builder
+    public Product(Long id, String name, String description) {
+        super(id);
         this.name = name;
         this.description = description;
 
-
-    }
-
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public boolean isBought() {
-        return bought;
-    }
-
-    public void setBought(final boolean bought) {
-        this.bought = bought;
-    }
-
-    public void updateFrom(final Product source) {
-        description = source.description;
-        name = source.name;
-        price = source.price;
-        bought = source.bought;
 
     }
 

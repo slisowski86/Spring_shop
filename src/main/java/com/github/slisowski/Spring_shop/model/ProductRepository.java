@@ -2,26 +2,20 @@ package com.github.slisowski.Spring_shop.model;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository {
-
-    List<Product> findAll();
-    Optional<Product> findById(Integer id);
-
-    boolean existsById(Integer id);
-    boolean existsByBoughtIsFalseAndShoppingLists_Id(Integer id);
-    Product save (Product entity);
-
-    Page<Product> findAll(Pageable page);
-    List<Product> findProductByName(@Param("name") String name );
-
-    List<Product> findProductByBought(boolean bought);
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
-    List<Product> findProductsByShoppingLists_Id(Integer id);
+        Product findByName(String name);
+
+        List<Product> findProductsByShoppingLists_Id(Long listId);
+
+        boolean existsByBoughtIsFalseAndShoppingLists_Id(Long shoppingListId);
 }
