@@ -65,10 +65,16 @@
 
 
                 <label>Nazwa listy
-                    <input type="text" th:field="*{name}"  th:errorclass="'Bdc(red)'"/>
+                    <input type="text" th:field="${list.name}"  th:errorclass="'Bdc(red)'"/>
                 </label>
-                <label>Data utworzenia
-                    <input name="datecreate" type="datetime-local" th:field="${list.dateCreate}">
+
+                    <label>Produkt
+                        <!--/*thymesVar id="products" type="java.util.List<com.github.slisowski.model.Product>"*/-->
+
+                        <input type="number", th:name="id"/>
+
+                    </label>
+
 
                 <p>
                     <button type="submit">Dodaj</button>

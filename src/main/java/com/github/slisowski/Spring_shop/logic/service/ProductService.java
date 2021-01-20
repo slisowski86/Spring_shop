@@ -3,13 +3,15 @@ package com.github.slisowski.Spring_shop.logic.service;
 import com.github.slisowski.Spring_shop.logic.servicerepo.ProductRepoService;
 import com.github.slisowski.Spring_shop.model.Product;
 import com.github.slisowski.Spring_shop.model.ProductRepository;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
+@Transactional
 public class ProductService implements ProductRepoService {
 
     final ProductRepository repository;
@@ -19,15 +21,16 @@ public class ProductService implements ProductRepoService {
     }
 
     @Override
-    public Set<Product> findAll() {
-        Set<Product> products = new HashSet<>();
+    public List<Product> findAll() {
+        List<Product> products = new ArrayList<>();
         repository.findAll().forEach(products::add);
         return products;
     }
 
     @Override
     public Product findById(final Long id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Product not found"));
     }
 
     @Override
@@ -48,7 +51,13 @@ public class ProductService implements ProductRepoService {
     }
 
     @Override
-    public List<Product> findProductsByShoppingLists_Id(final Long listId) {
-        return repository.findProductsByShoppingLists_Id(listId);
+    public void update(final Product product) {
+
+    }
+
+
+    @Override
+    public Product findByName(final String name) {
+        return repository.findByName(name);
     }
 }

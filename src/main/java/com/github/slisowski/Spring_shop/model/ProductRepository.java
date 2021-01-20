@@ -12,10 +12,8 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+    Product findByName(String name);
 
-        Product findByName(String name);
 
-        List<Product> findProductsByShoppingLists_Id(Long listId);
 
-        boolean existsByBoughtIsFalseAndShoppingLists_Id(Long shoppingListId);
 }

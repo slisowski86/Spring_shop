@@ -69,14 +69,17 @@
 
     </div>
     <div class="main">
-        <h2>Owner Information</h2>
+        <h2>Nowa Lista zakupów</h2>
 
         <!--/*@thymesVar id="newList" type="com.github.slisowski.Spring_shop.model.ShoppingList"*/-->
+
         <table class="table table-striped" th:object="${newList}">
             <tr>
                 <th>Name</th>
                 <td><b th:text="*{name}"></b></td>
             </tr>
+
+
 
 
         </table>

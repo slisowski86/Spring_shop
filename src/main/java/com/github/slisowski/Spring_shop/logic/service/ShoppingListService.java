@@ -4,11 +4,14 @@ import com.github.slisowski.Spring_shop.logic.servicerepo.ShoppingListRepoServic
 import com.github.slisowski.Spring_shop.model.ShoppingList;
 import com.github.slisowski.Spring_shop.model.ShoppingListRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
+@Transactional
 public class ShoppingListService implements ShoppingListRepoService {
 
     final ShoppingListRepository repository;
@@ -18,8 +21,8 @@ public class ShoppingListService implements ShoppingListRepoService {
     }
 
     @Override
-    public Set<ShoppingList> findAll() {
-        Set<ShoppingList> shoppingLists = new HashSet<>();
+    public List<ShoppingList> findAll() {
+        List<ShoppingList> shoppingLists = new ArrayList<>();
         repository.findAll().forEach(shoppingLists::add);
         return shoppingLists;
 
@@ -32,6 +35,7 @@ public class ShoppingListService implements ShoppingListRepoService {
 
     @Override
     public ShoppingList save(final ShoppingList shoppingList) {
+        shoppingList.setDateCreate(LocalDateTime.now());
         return repository.save(shoppingList);
     }
 
@@ -46,4 +50,14 @@ public class ShoppingListService implements ShoppingListRepoService {
         repository.deleteById(id);
 
     }
+
+
+
+    @Override
+    public void update(final ShoppingList shoppingList) {
+        this.repository.save(shoppingList);
+
+    }
+
+
 }

@@ -1,10 +1,10 @@
 package com.github.slisowski.Spring_shop.logic.servicerepo;
 
-import java.util.Set;
+import java.util.List;
 
-public interface  CrudService<T, ID> {
+public interface JpaService<T, ID> {
 
-    Set<T> findAll();
+    List<T> findAll();
 
     T findById(ID id);
 
@@ -13,4 +13,6 @@ public interface  CrudService<T, ID> {
     void delete(T object);
 
     void deleteById(ID id);
+
+    void update(T object);
 }
