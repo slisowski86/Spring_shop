@@ -1,63 +1,57 @@
 package com.github.slisowski.Spring_shop.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
-
+import java.util.Objects;
 
 @Embeddable
+
 class ShoppingListProductPK implements Serializable {
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name="shoppinglist_id")
-    private ShoppingList shoppingList;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @Column(name="product_id")
+    Long productId;
+
+    @Column(name="shoppingList_id")
+    Long shoppingListId;
 
 
-    ShoppingList getShoppingList() {
-        return shoppingList;
+
+    ShoppingListProductPK(final Long productId, final Long shoppingListId) {
+        this.productId = productId;
+        this.shoppingListId = shoppingListId;
     }
 
-    void setShoppingList(final ShoppingList shoppingList) {
-        this.shoppingList = shoppingList;
+    public ShoppingListProductPK() {
+
     }
 
-    Product getProduct() {
-        return product;
+    Long getProductId() {
+        return productId;
     }
 
-    void setProduct(final Product product) {
-        this.product = product;
+    void setProductId(final Long productId) {
+        this.productId = productId;
+    }
+
+    Long getShoppingListId() {
+        return shoppingListId;
+    }
+
+    void setShoppingListId(final Long shoppingListId) {
+        this.shoppingListId = shoppingListId;
     }
 
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof ShoppingListProductPK)) return false;
         final ShoppingListProductPK that = (ShoppingListProductPK) o;
-        return shoppingList.equals(that.shoppingList) && product.equals(that.product);
+        return productId.equals(that.productId) && shoppingListId.equals(that.shoppingListId);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-
-        result = prime * result + ((shoppingList.getId() == null)
-                ? 0
-                : shoppingList
-                .getId()
-                .hashCode());
-        result = prime * result + ((product.getId() == null)
-                ? 0
-                : product
-                .getId()
-                .hashCode());
-
-        return result;
+        return Objects.hash(productId, shoppingListId);
     }
 }

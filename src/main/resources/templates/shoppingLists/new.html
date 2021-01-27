@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,28 +52,22 @@
 
 
 
-        <fieldset>
-            <legend>Nowa lista zakupów</legend>
+            <fieldset>
+                <legend>Nowa lista zakupów</legend>
 
 
-            <!--/*@thymesVar id="list" type="com.github.slisowski.Spring_shop.model.ShoppingList"*/-->
-            <form action="#" method="post" th:action="@{/lists/new}" th:object="${list}">
-                <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}"></p>
-
-
-
-
-
+                <form action="#" method="post" th:action="@{/lists/new}" th:object="${list}">
                 <label>Nazwa listy
-                    <input type="text" th:field="${list.name}"  th:errorclass="'Bdc(red)'"/>
+                    <!--/*@thymesVar id="list" type="com.github.slisowski.Spring_shop.model.ShoppingList"*/-->
+                    <input type="text" th:field="${list.name}"/>
+
                 </label>
 
-                    <label>Produkt
-                        <!--/*thymesVar id="products" type="java.util.List<com.github.slisowski.model.Product>"*/-->
 
-                        <input type="number", th:name="id"/>
 
-                    </label>
+
+
+
 
 
                 <p>
@@ -84,7 +78,7 @@
 
             </form>
         </fieldset>
-        <h1 th:if="${message != null}" th:text="${message}"></h1>
+
 
 
 

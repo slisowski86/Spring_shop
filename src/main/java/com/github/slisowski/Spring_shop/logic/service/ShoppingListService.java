@@ -1,7 +1,9 @@
 package com.github.slisowski.Spring_shop.logic.service;
 
 import com.github.slisowski.Spring_shop.logic.servicerepo.ShoppingListRepoService;
+import com.github.slisowski.Spring_shop.model.Product;
 import com.github.slisowski.Spring_shop.model.ShoppingList;
+import com.github.slisowski.Spring_shop.model.ShoppingListProduct;
 import com.github.slisowski.Spring_shop.model.ShoppingListRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +51,15 @@ public class ShoppingListService implements ShoppingListRepoService {
     public void deleteById(final Long id) {
         repository.deleteById(id);
 
+    }
+
+    @Override
+    public void addProduct(Product product, ShoppingList shoppingList) {
+        ShoppingListProduct shoppingListProduct = new ShoppingListProduct(shoppingList, product);
+        shoppingListProduct.setProduct(product);
+        shoppingListProduct.setShoppingList(shoppingList);
+        shoppingList.getShoppingListProducts().add(shoppingListProduct);
+        product.getShoppingListProducts().add(shoppingListProduct);
     }
 
 
