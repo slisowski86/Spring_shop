@@ -72,12 +72,17 @@
         <h2>Nowa Lista zakupów</h2>
 
         <!--/*@thymesVar id="newList" type="com.github.slisowski.Spring_shop.model.ShoppingList"*/-->
-
+    <form action="#" method="post" th:action="@{'/lists/addProducts/'+${newList.id}}" th:object="${newList}">
         <table class="table table-striped" th:object="${newList}">
             <tr>
                 <th  th:text="${newList.name}"></th>
 
                 </tr>
+
+            <!--/*@thymesVar id="products" type="java.util.List<com.github.slisowski.Spring_shop.model.Product>"*/-->
+            <select id="id", name="id">
+                <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+            </select>
 
             <!--/*@thymesVar id="productsList" type="java.util.List<com.github.slisowski.Spring_shop.model.ShoppingList>"*/-->
            <dl th:each="product:${productsList}">
@@ -86,22 +91,22 @@
 
            </dl>
 
-            <div>
-                <button type="submit" name="addProduct">+</button>
-            </div>
+
 
 
 
 
 
             <p>
-                <button type="submit" name="addListToProduct">Dodaj</button>
+                <button type="submit">Dodaj</button>
                 <button type="reset">Wyczyść</button>
             </p>
-            </form>
+
 
 
         </table>
+
+    </form>
 
     </div>
 </div>

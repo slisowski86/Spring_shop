@@ -21,13 +21,7 @@ public class ShoppingList  {
     @OneToMany(mappedBy = "shoppingList",cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     List<ShoppingListProduct> shoppingListProducts=new ArrayList<>();
 
-   /* public void addProduct(Product product) {
-        ShoppingListProduct shoppingListProduct = new ShoppingListProduct(this,product);
-        shoppingListProduct.setProduct(product);
-        shoppingListProduct.setShoppingList(this);
-        shoppingListProducts.add(shoppingListProduct);
-        product.getShoppingListProducts().add(shoppingListProduct);
-    }*/
+
 
     private LocalDateTime dateCreate;
 
@@ -36,6 +30,8 @@ public class ShoppingList  {
 
 
     }
+
+
 
 
 

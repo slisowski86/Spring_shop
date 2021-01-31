@@ -6,14 +6,13 @@ import com.github.slisowski.Spring_shop.model.ShoppingList;
 import com.github.slisowski.Spring_shop.model.ShoppingListProduct;
 import com.github.slisowski.Spring_shop.model.ShoppingListRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
+
 public class ShoppingListService implements ShoppingListRepoService {
 
     final ShoppingListRepository repository;
@@ -52,10 +51,11 @@ public class ShoppingListService implements ShoppingListRepoService {
         repository.deleteById(id);
 
     }
-
     @Override
-    public void addProduct(Product product, ShoppingList shoppingList) {
-        ShoppingListProduct shoppingListProduct = new ShoppingListProduct(shoppingList, product);
+
+    public void addProduct(Product product, ShoppingList shoppingList){
+
+        ShoppingListProduct shoppingListProduct = new ShoppingListProduct(shoppingList,product);
         shoppingListProduct.setProduct(product);
         shoppingListProduct.setShoppingList(shoppingList);
         shoppingList.getShoppingListProducts().add(shoppingListProduct);
@@ -64,10 +64,17 @@ public class ShoppingListService implements ShoppingListRepoService {
 
 
 
+
+
     @Override
     public void update(final ShoppingList shoppingList) {
         this.repository.save(shoppingList);
 
+    }
+
+    @Override
+    public ShoppingList saveOrUpdate(final ShoppingList object) {
+        return repository.save(object);
     }
 
 

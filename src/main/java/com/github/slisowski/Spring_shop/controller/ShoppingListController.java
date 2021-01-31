@@ -4,10 +4,7 @@ package com.github.slisowski.Spring_shop.controller;
 import com.github.slisowski.Spring_shop.logic.service.ShoppingListProductService;
 import com.github.slisowski.Spring_shop.logic.servicerepo.ProductRepoService;
 import com.github.slisowski.Spring_shop.logic.servicerepo.ShoppingListRepoService;
-import com.github.slisowski.Spring_shop.model.Product;
-import com.github.slisowski.Spring_shop.model.ProductRepository;
-import com.github.slisowski.Spring_shop.model.ShoppingList;
-import com.github.slisowski.Spring_shop.model.ShoppingListRepository;
+import com.github.slisowski.Spring_shop.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -68,7 +65,8 @@ class ShoppingListController {
     }
 
     @GetMapping(value="/new", produces = MediaType.TEXT_HTML_VALUE)
-    String showCreateGroupForm(Model model)
+    String showCreateGroupForm(Model model, @ModelAttribute("list") ShoppingList currentList)
+
     {
 
 
@@ -83,20 +81,7 @@ class ShoppingListController {
     String addList(@ModelAttribute("list") ShoppingList currentList, Model model){
         logger.info(currentList.getName());
 
-        Product product= productService.findById(2L);
-        Product product1= productService.findById(5L);
-        Product product2= productService.findById(4L);
-        Product product3= productService.findById(6L);
 
-
-
-
-
-
-        service.addProduct(product, currentList);
-        service.addProduct(product1, currentList);
-        service.addProduct(product2, currentList);
-        service.addProduct(product3, currentList);
 
 
 
@@ -109,6 +94,28 @@ class ShoppingListController {
 
 
     }
+
+    /*@PostMapping(params="addNewProduct", value="/new")
+    String addNewProduct(Model model,@ModelAttribute("list") ShoppingList currentList, @ModelAttribute("productList") ProductListWrapper productList, @RequestParam("id") Long id){
+
+
+        model.addAttribute("productList", productList);
+        Product product = productService.findById(id);
+        productList.add(product);
+
+        for(Product p: productList.getProductList()){
+            System.out.println(p.getName());
+        }
+
+        return "shoppingLists/new";
+    }*/
+
+
+
+
+
+
+
 
    /* @PostMapping(params = "addProduct" , value ="/new" ,produces = MediaType.TEXT_HTML_VALUE, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     String addListProduct(@ModelAttribute("list") ShoppingList currentList, @ModelAttribute("productsToAdd") ProductList productList, @RequestParam(value="idList[]", required = false) List<Long> idList,
@@ -133,21 +140,16 @@ class ShoppingListController {
 
 
 
-    @PostMapping(params = "addProduct")
-    public String addProduct(@ModelAttribute ("newList") ShoppingList currentList, @ModelAttribute("productsList") List<Product> productList){
-        Product product=productService.findById(1L);
-        service.addProduct(product, currentList);
-        logger.info("Dodano "+product.getName());
-        return "redirect:/lists/addProducts/" + currentList.getId();
-    }
+
 
 
     @GetMapping("/addProducts/{shoppingListId}")
     public ModelAndView showShoppingList(@PathVariable Long shoppingListId,
-    @ModelAttribute("product") Product product) {
+    @ModelAttribute("product") Product product, @ModelAttribute("newList") ShoppingList currentList) {
 
         ModelAndView mav = new ModelAndView("shoppingLists/addProducts");
         mav.addObject("newList", service.findById(shoppingListId));
+        mav.addObject("products", productService.findAll());
 
 
         mav.addObject("productsList", shoppingListProductService.findProducts(shoppingListId));
@@ -156,13 +158,20 @@ class ShoppingListController {
         return mav;
     }
 
-    @GetMapping("/addProducts")
-    public String showShoppingList() {
+    @PostMapping("/addProducts/{shoppingListId}")
+    public String addProduct(Model model, @RequestParam("id") Long id, @PathVariable Long shoppingListId){
+        Product product= productService.findById(id);
+        ShoppingList list = service.findById(shoppingListId);
+
+        service.addProduct(product, list);
+        service.saveOrUpdate(list);
+
+        return "redirect:/lists/addProducts/" + list.getId();
 
 
-
-        return "shoppingLists/addProducts";
     }
+
+
 
 
 

@@ -5,13 +5,12 @@ import com.github.slisowski.Spring_shop.model.Product;
 import com.github.slisowski.Spring_shop.model.ProductRepository;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
+
 public class ProductService implements ProductRepoService {
 
     final ProductRepository repository;
@@ -53,6 +52,11 @@ public class ProductService implements ProductRepoService {
     @Override
     public void update(final Product product) {
 
+    }
+
+    @Override
+    public Product saveOrUpdate(final Product object) {
+        return null;
     }
 
 

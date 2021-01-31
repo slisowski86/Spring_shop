@@ -26,7 +26,7 @@ public class Product{
     private String name;
     private double price;
 
-    @OneToMany(mappedBy = "product", cascade ={CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "product", cascade ={CascadeType.MERGE})
     List<ShoppingListProduct> shoppingListProducts=new ArrayList<>();
 
 

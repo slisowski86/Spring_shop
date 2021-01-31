@@ -8,5 +8,7 @@ import com.github.slisowski.Spring_shop.model.ShoppingList;
 public interface ShoppingListRepoService extends JpaService<ShoppingList, Long> {
 
 
-    void addProduct(Product product, ShoppingList currentList);
+    public void addProduct(Product p, ShoppingList s);
+
+
 }

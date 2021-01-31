@@ -15,4 +15,6 @@ public interface JpaService<T, ID> {
     void deleteById(ID id);
 
     void update(T object);
+
+    T saveOrUpdate(T object);
 }
